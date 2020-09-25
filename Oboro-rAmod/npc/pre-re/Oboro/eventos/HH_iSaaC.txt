@@ -1,0 +1,104 @@
+/**
+ *	Isaac [Oboro Control Panel] (C)
+ *	HappyHour 2017
+ *	j-isaac10@hotmail.com
+ *	Realmente no se por qué este módulo no lo he hecho en C
+ *	Solo compatible con Oboro-rAmod
+ **/ 
+-	script	HH	-1,{
+	end;
+
+OnWhisperGlobal:
+	if ( getgmlevel() < 90 ) end; 
+OnInit:
+	bindatcmd("hhstart", strnpcinfo(3)+"::OnHHStart");
+	bindatcmd("hhstop", strnpcinfo(3)+"::OnHHStop");
+	bindatcmd("hhstatus", strnpcinfo(3)+"::OnHHStatus");
+end;
+
+
+OnHHStart:
+	if ( getgmlevel() < 90 ) end;
+
+	title("Happy Hour");
+	mes "Number of \"Extra\" Badges.";
+	input .badges;
+	next;
+
+	title("Happy Hour");
+	atcommand "@time";
+	mes "End Event Hour (22)";
+	input .fin;
+	next;
+	
+	if (.fin > 23)
+	{
+		.fin = 0;
+		.badges = 0;
+		title("Happy Hour");
+		mclose "00 -> 23 Hours";
+	}
+
+	announce "[Happy Hour]: has begun, ("+.badges+") Extra badges, and finish At: "+.fin+":00 hours (@time)",0,0x00BFFF;
+	setbattleflag "bg_event_extra_badges",.badges;
+	close;
+end;
+
+OnHHStop:
+	if ( getgmlevel() < 90 ) 
+		end;
+
+	if (.badges <= 0)
+	{
+		dispbottom "No event ongoing";
+		end;
+	}
+
+	announce "[Happy Hour]: is over, no more extra badges.",0,0x00BFFF;
+	setbattleflag "bg_event_extra_badges", 0;
+	.fin = 0;
+	.badges = 0;
+end;
+
+OnHHStatus:
+	if ( .porciento > 0 )
+		dispbottom "[ Happy Hour]: actualmente estamos a " + .porciento + "%";
+	else
+		dispbottom "[ Happy Hour]: actualmente no hay Custom de HH";		
+end;
+
+
+OnClock0000:
+OnClock0100:
+OnClock0200:
+OnClock0300:
+OnClock0400:
+OnClock0500:
+OnClock0600:
+OnClock0700:
+OnClock0800:
+OnClock0900:
+OnClock1000:
+OnClock1100:
+OnClock1200:
+OnClock1300:
+OnClock1400:
+OnClock1500:
+OnClock1600:
+OnClock1700:
+OnClock1800:
+OnClock1900:
+OnClock2000:
+OnClock2100:
+OnClock2200:
+OnClock2300:
+	if(gettime(3) != .fin)
+		end;
+
+	announce "[Happy Hour]: is over, no more extra badges.",0,0x00BFFF;
+	setbattleflag "bg_event_extra_badges", 0;
+	.fin = 0;
+	.badges = 0;
+end;
+
+}
